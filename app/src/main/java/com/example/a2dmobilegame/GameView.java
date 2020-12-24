@@ -12,6 +12,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
+    //TODO: HP class and damage get/give.
+    //TODO: player attack/get hit and enemy attack/get hit.
+    //TODO: enemy spawner.
+
     private MainGameThread mainThread;
 
     private boolean isTouch = false;
@@ -19,6 +23,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private Bitmap resizedBackGround;
 
     private Character player;
+    private Enemy enemy;
 
     boolean attackButtonIsDown = false;
     float startX = 0;
@@ -64,7 +69,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         resizedBackGround = Bitmap.createScaledBitmap(
                 backGround, screenWidth, screenHeight, false);
 
-        player = new Character(getResources(), 200, 600);
+        player = new Character(getResources(), screenWidth/8, screenHeight/2);
+        enemy = new Enemy(getResources(), screenWidth/2, screenHeight/2);
+        enemy.setTarget(player.getPosition());
 
         mainThread.setRunning(true);
         mainThread.start();
@@ -93,6 +100,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
      */
     public void update(){
         player.update();
+        enemy.Update();
         if(isTouch){
             player.move(startX-currentX, startY-currentY);
         }
@@ -170,8 +178,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         if(canvas != null) {
             canvas.drawColor(Color.BLACK);
             canvas.drawBitmap(resizedBackGround, 0, 0, null);
+            enemy.draw(canvas);
             player.draw(canvas);
-
         }
     }
 }

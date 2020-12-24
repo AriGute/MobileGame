@@ -14,4 +14,7 @@ public class Position extends Point {
     public  void  setIsFacingRight(boolean faceRight){
         this.faceRight = faceRight;
     }
+    public Position getPosition(){
+        return this;
+    }
 }

@@ -10,7 +10,8 @@ public class MainGameThread extends Thread {
     private boolean running;
     public static Canvas canvas;
 
-    private static long last_time = System.nanoTime();
+    private static long last_time = 1;
+    private static float delta_time = 0.1f;
 
 
     public MainGameThread(SurfaceHolder holder, GameView gameView) {
@@ -24,11 +25,14 @@ public class MainGameThread extends Thread {
         this.running = running;
     }
 
-    static public float getDeltaTime(){
+    private void setDeltaTime(){
         long time = System.nanoTime();
-        int delta_time = (int) ((time - last_time) / 1000000);
+        delta_time = (int) ((time - last_time) / 1000000);
         last_time = time;
-        //Log.d("[timeDeltaTime]", "getDeltaTime: last time:"+last_time+" , deltatime: "+delta_time);
+        Log.d("[timeDeltaTime]", "getDeltaTime: last time:"+last_time+" , deltatime: "+delta_time);
+    }
+
+    public static float getDeltaTime() {
         return delta_time;
     }
 
@@ -39,6 +43,7 @@ public class MainGameThread extends Thread {
             try{
                 canvas = this.surfaceHolder.lockCanvas();
                 synchronized (surfaceHolder){
+                    setDeltaTime();
                     this.gameView.update();
                     this.gameView.draw(canvas);
                 }
