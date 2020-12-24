@@ -6,4 +6,12 @@ public class Position extends Point {
         super(x, y);
         faceRight = true;
     }
+
+    public boolean getIsFacingRight(){
+        return  faceRight;
+    }
+
+    public  void  setIsFacingRight(boolean faceRight){
+        this.faceRight = faceRight;
+    }
 }

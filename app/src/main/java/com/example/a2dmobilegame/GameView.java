@@ -1,30 +1,36 @@
 package com.example.a2dmobilegame;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private MainGameThread mainThread;
-    //TODO: movment thread and buttons tread(for tuch inputs)
-    // or get multiply tuchs with id for each and stuff.
-
-    //private MovmentTread movmentTread;
-    //private ButtonThread buttonThread;
 
     private boolean isTouch = false;
+    private Bitmap backGround;
+    private Bitmap resizedBackGround;
 
-    Character player;
-    boolean tuchDown = false;
+    private Character player;
 
+    boolean attackButtonIsDown = false;
     float startX = 0;
     float startY = 0;
     float currentX = 0;
     float currentY = 0;
     float distance = 0;
+
+    int screenWidth = 0;
+    int screenHeight = 0;
+
+
 
     /**
      * GameView constructor.
@@ -51,7 +57,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
      */
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        player = new Character(getResources(), 200, 300);
+         screenWidth=Resources.getSystem().getDisplayMetrics().widthPixels;
+         screenHeight=Resources.getSystem().getDisplayMetrics().heightPixels;
+
+        backGround = BitmapFactory.decodeResource(getResources() , R.drawable.forest_back_ground);
+        resizedBackGround = Bitmap.createScaledBitmap(
+                backGround, screenWidth, screenHeight, false);
+
+        player = new Character(getResources(), 200, 600);
 
         mainThread.setRunning(true);
         mainThread.start();
@@ -85,19 +98,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         }
     }
 
-    /**
-     * Every time this method is called the canvas is repainted.
-     * @param canvas
-     */
-    @Override
-    public  void draw(Canvas canvas){
-        super.draw(canvas);
-        if(canvas != null) {
-            canvas.drawColor(Color.WHITE);
-            //canvas.drawBitmap(joystick, 100, 100, null);
-            player.draw(canvas);
-        }
-    }
 
     /**
      * Handle all the tuck inputs.
@@ -107,35 +107,71 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int eventaction = event.getAction();
+        if(event.getX() < screenWidth/2){
+            //Left side of the screen is the joystick for character movment.
+            switch (eventaction) {
+                case MotionEvent.ACTION_DOWN:
+                    //Log.d("[Tuch]", "onTouchEvent: "+ "ACTION_DOWN AT COORDS "+"X: "+X+", Y: "+Y);
+                    startX = event.getX();
+                    startY = event.getY();
+                    currentX = event.getX();
+                    currentY = event.getY();
+                    distance = 1;
+                    isTouch = true;
+                    player.isWalking(true);
+                    break;
 
+                case MotionEvent.ACTION_MOVE:
+                    //Log.d("[Tuch]", "onTouchEvent: "+ "ACTION_DOWN AT COORDS "+"X: "+X+", Y: "+Y+", distance "+distance);
+                    distance = (float) Math.sqrt(Math.pow(startX - startX, 2) + Math.pow(startY - startY, 2));
+                    currentX = event.getX();
+                    currentY = event.getY();
+                    break;
 
-        switch (eventaction) {
-            case MotionEvent.ACTION_DOWN:
-                //Log.d("[Tuch]", "onTouchEvent: "+ "ACTION_DOWN AT COORDS "+"X: "+X+", Y: "+Y);
-                startX = event.getX();
-                startY = event.getY();
-                currentX = event.getX();
-                currentY = event.getY();
-                distance = 1;
-                isTouch = true;
-                break;
+                case MotionEvent.ACTION_UP:
+                    //Log.d("[Tuch]", "onTouchEvent: "+ "ACTION_DOWN AT COORDS "+"X: "+X+", Y: "+Y);
+                    startX = 0;
+                    startY = 0;
+                    isTouch = false;
+                    distance = 1;
+                    player.isWalking(false);
+                    break;
+            }
+        }
 
-            case MotionEvent.ACTION_MOVE:
-                //Log.d("[Tuch]", "onTouchEvent: "+ "ACTION_DOWN AT COORDS "+"X: "+X+", Y: "+Y+", distance "+distance);
-                distance = (float) Math.sqrt(Math.pow(startX-startX,2)+Math.pow(startY-startY,2));
-                currentX = event.getX();
-                currentY = event.getY();
-                break;
+        if(event.getX() > screenWidth/2){
+            //Rigth side of the screen is the attack button.
+            switch (eventaction) {
+                case MotionEvent.ACTION_DOWN:
+                    if(attackButtonIsDown == false) {
+                        Log.d("[test]", "onTouchEvent: attack!");
+                        attackButtonIsDown = true;
+                        player.hit();
+                    }
+                    break;
 
-            case MotionEvent.ACTION_UP:
-                //Log.d("[Tuch]", "onTouchEvent: "+ "ACTION_DOWN AT COORDS "+"X: "+X+", Y: "+Y);
-                startX = 0;
-                startY = 0;
-                isTouch = false;
-                distance = 1;
-                break;
+                case MotionEvent.ACTION_UP:
+                    attackButtonIsDown = false;
+                    break;
+
+            }
         }
 
         return true;
+    }
+
+    /**
+     * Every time this method is called the canvas is repainted.
+     * @param canvas
+     */
+    @Override
+    public  void draw(Canvas canvas){
+        super.draw(canvas);
+        if(canvas != null) {
+            canvas.drawColor(Color.BLACK);
+            canvas.drawBitmap(resizedBackGround, 0, 0, null);
+            player.draw(canvas);
+
+        }
     }
 }
