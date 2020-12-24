@@ -14,16 +14,17 @@ import com.example.a2dmobilegame.Transform.Position;
 public class Character extends Position implements DrawAble {
     private Bitmap currentFrame;
     private Animation walk_anim;
+    private Animation hit_anim;
 
     private Bitmap idle;
-    private Bitmap hit0;
-    private Bitmap hit1;
+//    private Bitmap hit0;
+//    private Bitmap hit1;
 
     private BoxCollider collider;
 
     private boolean walking = false;
 
-    private  float hitRate = 1;
+    private  float hitRate = 2;
     private float hitTimer = 0;
 
 
@@ -31,15 +32,19 @@ public class Character extends Position implements DrawAble {
         super(x,y);
         idle = BitmapFactory.decodeResource(res , R.drawable.character_idle);
 
-        hit0 = BitmapFactory.decodeResource(res , R.drawable.character_hit0);
-        hit1 = BitmapFactory.decodeResource(res , R.drawable.character_hit);
+//        hit0 = BitmapFactory.decodeResource(res , R.drawable.character_hit0);
+//        hit1 = BitmapFactory.decodeResource(res , R.drawable.character_hit);
 
         walk_anim = new Animation(0.3f);
         walk_anim.addFrame( BitmapFactory.decodeResource(res , R.drawable.character_step0));
         walk_anim.addFrame( BitmapFactory.decodeResource(res , R.drawable.character_step1));
 
+        hit_anim = new Animation(0.8f);
+        hit_anim.addFrame( BitmapFactory.decodeResource(res , R.drawable.character_hit));
+        hit_anim.addFrame( BitmapFactory.decodeResource(res , R.drawable.character_hit0));
+
         currentFrame = idle;
-        collider = new BoxCollider(getThisPoint(), idle.getWidth(), idle.getHeight());
+        collider = new BoxCollider(getPoint(), idle.getWidth(), idle.getHeight());
     }
 
     /**
@@ -48,13 +53,15 @@ public class Character extends Position implements DrawAble {
     public void update(){
         if(hitTimer > 0){
             hitTimer -= 1/MainGameThread.getDeltaTime();
-            if(hitTimer > hitRate/2){
-                currentFrame = hit0;
-            }else {
-                currentFrame = hit1;
-            }
+            currentFrame = hit_anim.getFrame();
+//            if(hitTimer > hitRate/2){
+//                currentFrame = hit0;
+//            }else {
+//                currentFrame = hit1;
+//            }
         }else {
             currentFrame = idle;
+            hit_anim.resetAnim();
             if(walking == true){
                 currentFrame = walk_anim.getFrame();
             }else {

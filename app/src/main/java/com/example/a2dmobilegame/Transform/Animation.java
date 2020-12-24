@@ -15,7 +15,6 @@ public class Animation {
     private List<Bitmap> anim;
     private float frameRate = 1;
     private float frameTime = 0;
-    private boolean playing = false;
 
     public Animation(float frameRate){
         anim = new ArrayList<Bitmap>();
@@ -37,27 +36,28 @@ public class Animation {
     public Bitmap getFrame(){
         Bitmap frame = anim.get(currentFrame);
         if(frameTime <=0 ) {
+            frameTime = frameRate;
             if(currentFrame < anim.size()-1) {
                 currentFrame++;
             }else {
                 currentFrame = 0;
             }
-            frameTime = frameRate;
         }else {
             frameTime -= 1/MainGameThread.getDeltaTime();
         }
         return frame;
     }
 
-    public float getFrameTime(){
-        frameTime -= 1/MainGameThread.getDeltaTime();
-        return frameTime;
-    }
+//    public float getFrameTime(){
+//        frameTime -= 1/MainGameThread.getDeltaTime();
+//        return frameTime;
+//    }
 
     /**
      * Reset the animation to the first frame.
      */
     public void resetAnim(){
+        frameTime = 0;
         currentFrame = 0;
     }
 }
