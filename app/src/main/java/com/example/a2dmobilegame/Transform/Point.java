@@ -50,4 +50,7 @@ public class Point {
         return (float) Math.sqrt(Math.pow(other.getX(),2) + Math.pow(other.getY(),2));
     }
 
+    protected Point getThisPoint(){
+        return this;
+    }
 }
