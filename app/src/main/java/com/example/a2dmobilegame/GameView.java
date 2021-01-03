@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -14,11 +15,9 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
-    //TODO: player attack/get hit and enemy attack/get hit.
-    //TODO: enemy spawner.
-
     private MainGameThread mainThread;
 
     private boolean isTouch = false;
@@ -26,8 +25,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private Bitmap resizedBackGround;
 
     public static List<Enemy> enemyList;
-
     public static Character player;
+
+    private int score = 0;
+    private float spawnTime;
+    private float spawnRate = 35;
 
     boolean attackButtonIsDown = false;
     float startX = 0;
@@ -69,14 +71,15 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
          screenWidth=Resources.getSystem().getDisplayMetrics().widthPixels;
          screenHeight=Resources.getSystem().getDisplayMetrics().heightPixels;
 
-        backGround = BitmapFactory.decodeResource(getResources() , R.drawable.forest_back_ground);
+        backGround = BitmapFactory.decodeResource(getResources() , R.drawable.forest_back_ground2);
         resizedBackGround = Bitmap.createScaledBitmap(
                 backGround, screenWidth, screenHeight, false);
 
         player = new Character(getResources(), screenWidth/8, screenHeight/2);
 
         enemyList = new ArrayList<Enemy>();
-        enemyList.add(new Enemy(getResources(), screenWidth/2, screenHeight/2, player.getPosition()));
+
+        spawnEnemy();
 
         mainThread.setRunning(true);
         mainThread.start();
@@ -105,6 +108,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
      */
     public void update(){
         player.update();
+
+        if(spawnTime > 0){
+            spawnTime -= 0.5/MainGameThread.getDeltaTime();
+        }else {
+            spawnTime = spawnRate;
+            spawnEnemy();
+        }
+
         for(Enemy enemy : enemyList){
             enemy.Update();
         }
@@ -113,6 +124,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         }
     }
 
+    private void spawnEnemy(){
+        enemyList.add(new Enemy(getResources(), screenWidth/2, screenHeight/2, player.getPosition()));
+    }
 
     /**
      * Handle all the tuck inputs.
@@ -184,22 +198,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         super.draw(canvas);
         if(canvas != null) {
             canvas.drawColor(Color.BLACK);
-            canvas.drawBitmap(resizedBackGround, 0, 0, null);
-
+            canvas.drawBitmap(resizedBackGround, 0, 100, null);
 
             for (int i=0 ; i < enemyList.size() ; i++){
                     Enemy enemy = enemyList.get(i);
                     if(enemy.getAttr().isAlive()) {
                         enemy.draw(canvas);
                     }else {
+                        score += 100+(int)spawnTime;
                         enemyList.remove(i);
                     }
             }
-//            for(Enemy enemy : enemyList) {
-//                enemy.draw(canvas);
-//            }
 
             player.draw(canvas);
+
+            Rect br = new Rect(0,0,screenWidth,100);
+            Paint bp = new Paint(0);
+            bp.setColor(Color.rgb(0,0,0));
+            canvas.drawRect(br,bp);
+
+            Paint p = new Paint();
+            p.setTextSize(50);
+            p.setColor(Color.rgb(255,255,255));
+            canvas.drawText("spawn time: "+(int)spawnTime, screenWidth/1.3f, 70, p);
+            canvas.drawText("score: "+score, 50, 70, p);
 
         }
     }

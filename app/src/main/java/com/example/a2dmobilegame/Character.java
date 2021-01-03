@@ -12,6 +12,8 @@ import com.example.a2dmobilegame.gameObject.Position;
 
 
 public class Character extends Position implements DrawAble {
+    private final int BACK_GROUND_BOUND_FIX = 50;
+
     private Bitmap currentFrame;
     private Animation walk_anim;
     private Animation hit_anim;
@@ -158,7 +160,7 @@ public class Character extends Position implements DrawAble {
         if(x >= width- idle.getWidth() || x <= 0){
             return false;
         }
-        if(y >= height- idle.getHeight() || y+ idle.getHeight()/2 <= height/3){
+        if(y >= height- idle.getHeight() || y + idle.getHeight()/2 <= height/3+BACK_GROUND_BOUND_FIX){
             return  false;
         }
         return true;
