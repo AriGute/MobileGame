@@ -27,7 +27,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     public static List<Enemy> enemyList;
 
-    private static Character player;
+    public static Character player;
 
     boolean attackButtonIsDown = false;
     float startX = 0;

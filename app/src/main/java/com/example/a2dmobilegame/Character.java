@@ -25,7 +25,6 @@ public class Character extends Position implements DrawAble {
     private  float hitRate = 2;
     private float hitTimer = 0;
 
-
     public Character(Resources res ,float x, float y){
         super(x,y);
         idle = BitmapFactory.decodeResource(res , R.drawable.character_idle);
@@ -68,8 +67,6 @@ public class Character extends Position implements DrawAble {
         }
         attr.setPos((int) getX(), (int)getY(), (int) collider.getWidth());
     }
-
-
 
     /**
      * Move the character to a new position.
