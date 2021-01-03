@@ -29,7 +29,7 @@ public class MainGameThread extends Thread {
         long time = System.nanoTime();
         delta_time = (int) ((time - last_time) / 1000000);
         last_time = time;
-        Log.d("[timeDeltaTime]", "getDeltaTime: last time:"+last_time+" , deltatime: "+delta_time);
+        //Log.d("[timeDeltaTime]", "getDeltaTime: last time:"+last_time+" , deltatime: "+delta_time);
     }
 
     public static float getDeltaTime() {

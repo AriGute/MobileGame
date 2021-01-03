@@ -1,4 +1,4 @@
-package com.example.a2dmobilegame.Transform;
+package com.example.a2dmobilegame.gameObject;
 
 public class BoxCollider {
 

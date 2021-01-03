@@ -6,34 +6,30 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.Log;
 
-import com.example.a2dmobilegame.Transform.Animation;
-import com.example.a2dmobilegame.Transform.BoxCollider;
-import com.example.a2dmobilegame.Transform.Position;
+import com.example.a2dmobilegame.gameObject.Animation;
+import com.example.a2dmobilegame.gameObject.BoxCollider;
+import com.example.a2dmobilegame.gameObject.Position;
 
 
 public class Character extends Position implements DrawAble {
+    private final int BACK_GROUND_BOUND_FIX = 50;
+
     private Bitmap currentFrame;
     private Animation walk_anim;
     private Animation hit_anim;
 
     private Bitmap idle;
-//    private Bitmap hit0;
-//    private Bitmap hit1;
 
     private BoxCollider collider;
-
+    private Attributes attr;
     private boolean walking = false;
 
     private  float hitRate = 2;
     private float hitTimer = 0;
 
-
     public Character(Resources res ,float x, float y){
         super(x,y);
         idle = BitmapFactory.decodeResource(res , R.drawable.character_idle);
-
-//        hit0 = BitmapFactory.decodeResource(res , R.drawable.character_hit0);
-//        hit1 = BitmapFactory.decodeResource(res , R.drawable.character_hit);
 
         walk_anim = new Animation(0.3f);
         walk_anim.addFrame( BitmapFactory.decodeResource(res , R.drawable.character_step0));
@@ -45,6 +41,8 @@ public class Character extends Position implements DrawAble {
 
         currentFrame = idle;
         collider = new BoxCollider(getPoint(), idle.getWidth(), idle.getHeight());
+        attr = new Attributes(100, 10);
+
     }
 
     /**
@@ -54,11 +52,6 @@ public class Character extends Position implements DrawAble {
         if(hitTimer > 0){
             hitTimer -= 1/MainGameThread.getDeltaTime();
             currentFrame = hit_anim.getFrame();
-//            if(hitTimer > hitRate/2){
-//                currentFrame = hit0;
-//            }else {
-//                currentFrame = hit1;
-//            }
         }else {
             currentFrame = idle;
             hit_anim.resetAnim();
@@ -74,9 +67,8 @@ public class Character extends Position implements DrawAble {
         }else {
             currentFrame = Bitmap.createScaledBitmap(currentFrame, -currentFrame.getWidth(), currentFrame.getHeight(), false);
         }
+        attr.setPos((int) getX(), (int)getY(), (int) collider.getWidth());
     }
-
-
 
     /**
      * Move the character to a new position.
@@ -127,9 +119,32 @@ public class Character extends Position implements DrawAble {
 
     }
 
+    public Attributes getAttr(){
+        return attr;
+    }
+
     public void hit(){
         if(hitTimer <= 0f) {
             hitTimer = hitRate;
+            for (Enemy enemy : GameView.enemyList) {
+                Log.d("[hit dis]", "hit: dis: "+distance(enemy.getPosition()));
+                if(distance(enemy.getPosition()) < currentFrame.getWidth()){
+                    if(getIsFacingRight()){
+                        if(enemy.getX()>getX()){
+                            enemy.getAttr().DeliverDamage(attr.getDamage());
+                            enemy.pushAside(30);
+                            enemy.resetSpeed();
+
+                        }
+                    }else {
+                        if(enemy.getX()<getX()){
+                            enemy.getAttr().DeliverDamage(attr.getDamage());
+                            enemy.pushAside(-30);
+                            enemy.resetSpeed();
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -145,7 +160,7 @@ public class Character extends Position implements DrawAble {
         if(x >= width- idle.getWidth() || x <= 0){
             return false;
         }
-        if(y >= height- idle.getHeight() || y+ idle.getHeight()/2 <= height/3){
+        if(y >= height- idle.getHeight() || y + idle.getHeight()/2 <= height/3+BACK_GROUND_BOUND_FIX){
             return  false;
         }
         return true;
@@ -158,5 +173,8 @@ public class Character extends Position implements DrawAble {
     @Override
     public void draw(Canvas canvas) {
         canvas.drawBitmap(currentFrame, getX(), getY(), null);
+
+        //draw health bar
+        attr.draw(canvas);
     }
 }
