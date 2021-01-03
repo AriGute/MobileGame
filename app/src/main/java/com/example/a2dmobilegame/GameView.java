@@ -6,13 +6,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
-    //TODO: HP class and damage get/give.
     //TODO: player attack/get hit and enemy attack/get hit.
     //TODO: enemy spawner.
 
@@ -22,8 +25,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private Bitmap backGround;
     private Bitmap resizedBackGround;
 
-    private Character player;
-    private Enemy enemy;
+    public static List<Enemy> enemyList;
+
+    private static Character player;
 
     boolean attackButtonIsDown = false;
     float startX = 0;
@@ -70,8 +74,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                 backGround, screenWidth, screenHeight, false);
 
         player = new Character(getResources(), screenWidth/8, screenHeight/2);
-        enemy = new Enemy(getResources(), screenWidth/2, screenHeight/2);
-        enemy.setTarget(player.getPosition());
+
+        enemyList = new ArrayList<Enemy>();
+        enemyList.add(new Enemy(getResources(), screenWidth/2, screenHeight/2, player.getPosition()));
 
         mainThread.setRunning(true);
         mainThread.start();
@@ -100,7 +105,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
      */
     public void update(){
         player.update();
-        enemy.Update();
+        for(Enemy enemy : enemyList){
+            enemy.Update();
+        }
         if(isTouch){
             player.move(startX-currentX, startY-currentY);
         }
@@ -178,8 +185,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         if(canvas != null) {
             canvas.drawColor(Color.BLACK);
             canvas.drawBitmap(resizedBackGround, 0, 0, null);
-            enemy.draw(canvas);
+
+
+            for (int i=0 ; i < enemyList.size() ; i++){
+                    Enemy enemy = enemyList.get(i);
+                    if(enemy.getAttr().isAlive()) {
+                        enemy.draw(canvas);
+                    }else {
+                        enemyList.remove(i);
+                    }
+            }
+//            for(Enemy enemy : enemyList) {
+//                enemy.draw(canvas);
+//            }
+
             player.draw(canvas);
+
         }
     }
 }

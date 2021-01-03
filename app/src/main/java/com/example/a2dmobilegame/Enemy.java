@@ -6,36 +6,47 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.Log;
 
-import com.example.a2dmobilegame.Transform.Animation;
-import com.example.a2dmobilegame.Transform.BoxCollider;
-import com.example.a2dmobilegame.Transform.Position;
+import com.example.a2dmobilegame.gameObject.Animation;
+import com.example.a2dmobilegame.gameObject.BoxCollider;
+import com.example.a2dmobilegame.gameObject.Position;
 
 public class Enemy extends Position implements DrawAble{
     private Bitmap currentFrame;
     private Animation walk_anim;
+    private Animation hit_anim;
+
     private BoxCollider collider;
+    private Attributes attr;
 
     private Position target;
-    private float moveSpeed = 15;
-    public Enemy(Resources res, float x, float y) {
+    private float maxSpeed = 15;
+    private float speedBuffer = 1;
+    public Enemy(Resources res, float x, float y, Position target) {
         super(x, y);
         currentFrame = BitmapFactory.decodeResource(res , R.drawable.enemy_move0);
         walk_anim = new Animation(0.5f);
         walk_anim.addFrame( BitmapFactory.decodeResource(res , R.drawable.enemy_move0));
         walk_anim.addFrame( BitmapFactory.decodeResource(res , R.drawable.enemy_move1));
 
+        hit_anim = new Animation(1);
+
         collider = new BoxCollider(getPoint(), currentFrame.getWidth(), currentFrame.getHeight());
+        attr = new Attributes(100, 10);
+        setTarget(target);
     }
 
     public void Update(){
         if(target != null){
             float speed = 0;
             if(distance(target) > currentFrame.getWidth()/2) {
-                Log.d("[Enemy]", "Update: distance - " + distance(target));
-                speed = moveSpeed / MainGameThread.getDeltaTime();
+                speed = speedBuffer / MainGameThread.getDeltaTime();
+                if(speedBuffer < maxSpeed){
+                    speedBuffer+= 2/MainGameThread.getDeltaTime();
+                }
+                //Log.d("[speedBuffer]", "Update: buffer: "+speedBuffer+", speed: "+speed);
             }
             currentFrame = walk_anim.getFrame();
-            Log.d("[Enemy]", "Update: pos: x-> " + getX()+" , y-> "+getY());
+            //Log.d("[Enemy]", "Update: pos: x-> " + getX()+" , y-> "+getY());
             if(target.getX() > this.getX()){
                 setX(getX()+speed);
             }else {
@@ -48,14 +59,36 @@ public class Enemy extends Position implements DrawAble{
                 setY(getY()-speed);
             }
         }
+        attr.setPos((int) getX(), (int)getY(), (int) collider.getWidth());
     }
 
+    /**
+     * reset speed buffer.
+     */
+    public void resetSpeed(){
+        speedBuffer = 1;
+    }
+
+    /**
+     * set the target that this unit is need follow.
+     * @param target as Position.
+     */
     public void setTarget(Position target){
             this.target = target;
     }
 
+    /**
+     * return attributes(used to use attr methords such as deliverDamage etc..).
+     * @return Attributes.
+     */
+    public Attributes getAttr(){
+        return attr;
+    }
+
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(Canvas canvas)
+    {
         canvas.drawBitmap(currentFrame, getX(), getY(), null);
+        attr.draw(canvas);
     }
 }
