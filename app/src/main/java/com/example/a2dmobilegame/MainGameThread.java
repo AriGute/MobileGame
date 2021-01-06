@@ -25,6 +25,9 @@ public class MainGameThread extends Thread {
         this.running = running;
     }
 
+    /**
+     * Update the real world time scale(delta time).
+     */
     private void setDeltaTime(){
         long time = System.nanoTime();
         delta_time = (int) ((time - last_time) / 1000000);
@@ -32,6 +35,11 @@ public class MainGameThread extends Thread {
         //Log.d("[timeDeltaTime]", "getDeltaTime: last time:"+last_time+" , deltatime: "+delta_time);
     }
 
+    /**
+     * Return real time world scale(delta time).
+     * (time that passed in microsec for each frame)
+     * @return delta_time as float.
+     */
     public static float getDeltaTime() {
         return delta_time;
     }

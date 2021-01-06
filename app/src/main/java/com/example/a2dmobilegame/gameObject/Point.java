@@ -1,5 +1,8 @@
 package com.example.a2dmobilegame.gameObject;
 
+/**
+ * This class hould the position on the screen as point(x,y).
+ */
 public class Point {
     private float x;
     private float y;
@@ -50,11 +53,20 @@ public class Point {
         return (float) Math.sqrt(Math.pow(other.getX(),2) + Math.pow(other.getY(),2));
     }
 
+    /**
+     *
+     * @param otherPos other position.
+     * @return distance between this point and other point as float.
+     * */
     public  float distance(Position otherPos){
         Point other = new Point(otherPos.getX(), otherPos.getY());
         return (float) Math.sqrt(Math.pow(other.getX()-getX(),2) + Math.pow(other.getY()-getY(),2));
     }
 
+    /**
+     *
+     * @return this as Point.
+     */
     protected Point getPoint(){
         return this;
     }

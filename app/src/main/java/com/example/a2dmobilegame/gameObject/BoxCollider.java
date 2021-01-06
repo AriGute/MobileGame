@@ -1,5 +1,8 @@
 package com.example.a2dmobilegame.gameObject;
 
+/**
+ * This class handle the bounds of gameobject.
+ */
 public class BoxCollider {
 
     private  Point point;

@@ -6,6 +6,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 
+/**
+ * This class add attributes to gameObjects such as health, damage,  etc..
+ */
 public class Attributes implements DrawAble {
     private int currentHP;
     private int maxHP;
@@ -16,6 +19,7 @@ public class Attributes implements DrawAble {
     private int fixWidth;
 
     private boolean isAlive;
+
     public Attributes(int maxHP, int damage){
         this.maxHP = maxHP;
         this.currentHP = maxHP;
@@ -24,6 +28,12 @@ public class Attributes implements DrawAble {
         this.isAlive = true;
     }
 
+    /**
+     * Set the position of the health bar(above the gameobject on the canvas).
+     * @param x x position.
+     * @param y y position
+     * @param width width of the bitmap of the gameObject that oun the attributes.
+     */
     public void setPos(int x, int y, int width){
         this.posX = x;
         this.posY = y;

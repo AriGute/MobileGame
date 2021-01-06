@@ -51,6 +51,7 @@ public class Character extends Position implements DrawAble {
      */
     public void update(){
         if(hitTimer > 0){
+            //if hitting change animation and count down hit timer.
             hitTimer -= 1/MainGameThread.getDeltaTime();
             currentFrame = hit_anim.getFrame();
         }else {
@@ -80,6 +81,8 @@ public class Character extends Position implements DrawAble {
         if(hitTimer <= 0f) {
             float scale = (float) 0.05;
             int maxValue = 10;
+
+            //Movement speed scale for the movment joystic input.
             float speedX = Math.abs(Math.abs((x * scale)) > maxValue ? maxValue : (x * scale));
             float speedY = Math.abs(Math.abs((y * scale)) > maxValue ? maxValue : (y * scale)) / 2;
 
