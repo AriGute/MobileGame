@@ -27,9 +27,10 @@ public class Character extends Position implements DrawAble {
     private  float hitRate = 2;
     private float hitTimer = 0;
 
+
     public Character(Resources res ,float x, float y){
         super(x,y);
-        idle = BitmapFactory.decodeResource(res , R.drawable.character_idle);
+        idle = BitmapFactory.decodeResource(res , R.drawable.character);
 
         walk_anim = new Animation(0.3f);
         walk_anim.addFrame( BitmapFactory.decodeResource(res , R.drawable.character_step0));
@@ -123,6 +124,9 @@ public class Character extends Position implements DrawAble {
         return attr;
     }
 
+    /**
+     * Hit function, handle everything after clicking the hit button.
+     */
     public void hit(){
         if(hitTimer <= 0f) {
             hitTimer = hitRate;
@@ -166,6 +170,10 @@ public class Character extends Position implements DrawAble {
         return true;
     }
 
+    /**
+     * Set the indicator for walking.
+     * @param walk as boolean.
+     */
     public void isWalking(boolean walk){
         this.walking = walk;
     }

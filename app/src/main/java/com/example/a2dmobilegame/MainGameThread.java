@@ -42,7 +42,7 @@ public class MainGameThread extends Thread {
             canvas = null;
             try{
                 canvas = this.surfaceHolder.lockCanvas();
-                synchronized (surfaceHolder){
+                synchronized (surfaceHolder) {
                     setDeltaTime();
                     this.gameView.update();
                     this.gameView.draw(canvas);
