@@ -48,11 +48,6 @@ public class Animation {
         return frame;
     }
 
-//    public float getFrameTime(){
-//        frameTime -= 1/MainGameThread.getDeltaTime();
-//        return frameTime;
-//    }
-
     /**
      * Reset the animation to the first frame.
      */

@@ -37,6 +37,7 @@ public class Enemy extends Position implements DrawAble{
         hit_anim.addFrame(BitmapFactory.decodeResource(res, R.drawable.enemy_hit1));
 
 
+
         collider = new BoxCollider(getPoint(), currentFrame.getWidth(), currentFrame.getHeight());
         attr = new Attributes(100, 10);
         setTarget(target);
@@ -46,6 +47,7 @@ public class Enemy extends Position implements DrawAble{
         if(target != null){
             float speed = 0;
             if(distance(target) > currentFrame.getWidth()/2) {
+                //Speed buffer start at 1 and increase with time to maximum of maxSpeed.
                 speed = speedBuffer / MainGameThread.getDeltaTime();
 
                 hitTimer = 0;

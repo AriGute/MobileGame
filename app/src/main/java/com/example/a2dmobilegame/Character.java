@@ -27,9 +27,10 @@ public class Character extends Position implements DrawAble {
     private  float hitRate = 2;
     private float hitTimer = 0;
 
+
     public Character(Resources res ,float x, float y){
         super(x,y);
-        idle = BitmapFactory.decodeResource(res , R.drawable.character_idle);
+        idle = BitmapFactory.decodeResource(res , R.drawable.character);
 
         walk_anim = new Animation(0.3f);
         walk_anim.addFrame( BitmapFactory.decodeResource(res , R.drawable.character_step0));
@@ -50,6 +51,7 @@ public class Character extends Position implements DrawAble {
      */
     public void update(){
         if(hitTimer > 0){
+            //if hitting change animation and count down hit timer.
             hitTimer -= 1/MainGameThread.getDeltaTime();
             currentFrame = hit_anim.getFrame();
         }else {
@@ -79,6 +81,8 @@ public class Character extends Position implements DrawAble {
         if(hitTimer <= 0f) {
             float scale = (float) 0.05;
             int maxValue = 10;
+
+            //Movement speed scale for the movment joystic input.
             float speedX = Math.abs(Math.abs((x * scale)) > maxValue ? maxValue : (x * scale));
             float speedY = Math.abs(Math.abs((y * scale)) > maxValue ? maxValue : (y * scale)) / 2;
 
@@ -123,6 +127,9 @@ public class Character extends Position implements DrawAble {
         return attr;
     }
 
+    /**
+     * Hit function, handle everything after clicking the hit button.
+     */
     public void hit(){
         if(hitTimer <= 0f) {
             hitTimer = hitRate;
@@ -166,6 +173,10 @@ public class Character extends Position implements DrawAble {
         return true;
     }
 
+    /**
+     * Set the indicator for walking.
+     * @param walk as boolean.
+     */
     public void isWalking(boolean walk){
         this.walking = walk;
     }

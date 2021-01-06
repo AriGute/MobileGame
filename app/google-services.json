@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "54647156987",
+    "project_id": "android-2d-game",
+    "storage_bucket": "android-2d-game.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:54647156987:android:0369e552ae579e9a9a005e",
+        "android_client_info": {
+          "package_name": "com.example.a2dmobilegame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "54647156987-ldeusl4r9u8cs1sh3rbf9uv5t67q0jks.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw6PeqkluSCADqIV4fWwKm5zuQ3n-RoZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "54647156987-ldeusl4r9u8cs1sh3rbf9uv5t67q0jks.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
