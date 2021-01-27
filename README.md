@@ -3,9 +3,13 @@
 
 ## Program Purpose
 The project must meet a number of conditions:
+
 Purpose for the user to stimulate progress
+
 User authentication
+
 Working with databases
+
 Working with Android Studio
 
 ## Getting Started
