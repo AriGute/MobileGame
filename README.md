@@ -2,15 +2,11 @@
 2D game made for Android and mobile course project.
 
 ## Program Purpose
-**The project must meet a number of conditions:**
-
-Purpose for the user to stimulate progress
-
-User authentication
-
-Working with databases
-
-Working with Android Studio
+* **The project must meet a number of conditions:**
+* Purpose for the user to stimulate progress
+* User authentication
+* Working with databases
+* Working with Android Studio
 
 ## Getting Started
 1) Download the project and Open it in android studio.
