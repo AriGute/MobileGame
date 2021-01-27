@@ -2,7 +2,7 @@
 2D game made for Android and mobile course project.
 
 ## Program Purpose
-The project must meet a number of conditions:
+**The project must meet a number of conditions:**
 
 Purpose for the user to stimulate progress
 
