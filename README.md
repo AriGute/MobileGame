@@ -11,7 +11,7 @@ The player must kill as many evil green goo without dying.
 ## Program Purpose
 **The project must meet a number of conditions:**
 
-* Purpose for the user to stimulate progress
+* Create a goal and progress for the user
 * User authentication
 * Working with databases
 * Working with Android Studio
