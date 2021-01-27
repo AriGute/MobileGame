@@ -17,15 +17,15 @@ The player must kill as many evil green goo without dying.
 * Working with Android Studio
 
 ## Getting Started
-1) Download the project and Open it in android studio.
+1) Download the project and Open it in android studio
 
-2) Build -> build bundle / apk -> build apk.
+2) Build -> build bundle / apk -> build apk
 
-3) Transfer the APK to the device.
+3) Transfer the APK to the device
 
-4) Install on the device.
+4) Install on the device
 
-5) Launch 2dMobileGame.
+5) Launch 2dMobileGame
 
 ## Authors
 * **Ariel Gueta**
