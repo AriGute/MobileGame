@@ -1,6 +1,9 @@
 # MobileGame
 2D game made for Android and mobile course project.
 
+## The game:
+The player must kill as many evil green goo without dying.
+
 ## Program Purpose
 **The project must meet a number of conditions:**
 
