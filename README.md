@@ -9,11 +9,11 @@ Working with databases
 Working with Android Studio
 
 ## Getting Started
-Download the project and Open it in android studio.
-build -> build bundle / apk -> build apk.
-Transfer the APK to the device.
-Install on the device.
-Launch 2dMobileGame.
+1)Download the project and Open it in android studio.
+2)build -> build bundle / apk -> build apk.
+3)Transfer the APK to the device.
+4)Install on the device.
+5)Launch 2dMobileGame.
 
 ## Authors
 * **Ariel Gueta**
