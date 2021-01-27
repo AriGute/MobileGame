@@ -9,8 +9,7 @@ Working with databases
 Working with Android Studio
 
 ## Getting Started
-Download the project
-Open it in android studio
+Download the project and Open it in android studio
 build -> build bundle / apk -> build apk
 Transfer the APK to the device
 Install on the device
