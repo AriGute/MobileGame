@@ -4,6 +4,10 @@
 ## The game:
 The player must kill as many evil green goo without dying.
 
+## Controls:
+* Half left screen is a movement joystick
+* Half right screen is a hit button
+
 ## Program Purpose
 **The project must meet a number of conditions:**
 
