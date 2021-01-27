@@ -65,6 +65,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     //Enemey spawn rate.
     private final float spawnRate = 35;
 
+    private String search;
 
     //Tuach for screen inputs.
     boolean attackButtonIsDown = false;
@@ -95,10 +96,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
      * GameView constructor.
      * @param context current state of the application(Context).
      */
-    public GameView(Context context,FirebaseAuth mAuth,FirebaseUser currentUser) {
+    public GameView(Context context,FirebaseAuth mAuth,FirebaseUser currentUser,String seach) {
         super(context);
         getHolder().addCallback(this);
-
+        this.search = seach;
         this.auth = mAuth;
         this.currentUser = currentUser;
         name = currentUser.getEmail().split("@")[0];
@@ -413,24 +414,41 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
      * Retrive the high score collection forom the data base and convert it to string.
      */
     private void getHighScore(){
+        Log.d("[Score]", "getHighScore: search: "+search);
         //Ask for the collection "highScoreBoard" and sort the scores from the highest to the lowest.
         db.collection("highScoreBoard").orderBy("score", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
                     //Once the data hase arrive:
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            highScore = "High Score:\n";
-                            //for each doc in the collecion split to names+scores and add to highscore.
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                highScore += "," + document.getData().get("name")+" : " + document.getData().get("score") + "\n";
-                                Log.d("[getHighScore]", document.getId() + " => " + document.getData());
+                            if(search.compareTo("")==0) {
+                                highScore = "High Score:\n";
+                                //for each doc in the collecion split to names+scores and add to highscore.
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    highScore += "," + document.getData().get("name") + " : " + document.getData().get("score") + "\n";
+                                    Log.d("[getHighScore]", document.getId() + " => " + document.getData());
+                                }
+                            }else{
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String name = document.getData().get("name").toString().replace(" ","");
+                                    String s = search.replace(" ", "");
+                                    
+                                    highScore = "High Score:\n";
+                                    Log.d("[score t]", "onComplete: "+name+ ", " + (name.compareTo(s)));
+                                    if (name.compareTo(s)==0) {
+                                        highScore += "," + document.getData().get("name") + " : " + document.getData().get("score") + "\n";
+                                        Log.d("[getHighScore]", document.getId() + " => " + document.getData());
+                                    }
+                                }
                             }
                         } else {
                             Log.w("[getHighScore]", "Error getting documents.", task.getException());
                         }
                     }
                 });
+
     }
 }

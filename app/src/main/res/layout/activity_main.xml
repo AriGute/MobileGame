@@ -60,7 +60,7 @@
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="104dp"
         android:text="LogIn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -71,10 +71,10 @@
         android:id="@+id/create_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="152dp"
         android:text="Create new"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_label" />
 
@@ -90,4 +90,36 @@
         app:layout_constraintStart_toEndOf="@+id/Email_label"
         app:layout_constraintTop_toTopOf="@+id/Email_label"
         app:layout_constraintVertical_bias="0.38" />
+
+    <TextView
+        android:id="@+id/searchLabel"
+        android:layout_width="111dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="9dp"
+        android:text="Score search"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/searchInput"
+        app:layout_constraintTop_toBottomOf="@+id/password_label" />
+
+    <EditText
+        android:id="@+id/searchInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_imput" />
+
+    <TextView
+        android:id="@+id/searchMsg"
+        android:layout_width="219dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="136dp"
+        android:text="leave empty show top 10 scores."
+        android:textColor="#FF0000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchInput" />
 </androidx.constraintlayout.widget.ConstraintLayout>
